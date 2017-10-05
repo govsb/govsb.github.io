@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="原文出处: https://segmentfault.com/a/1190000011365430 我想大部分Python开发者最先接触到的方向是WEB方向（因为总是有开发者希望马上给自己做个博客出来，例如我），既然是WEB，免不了接触到一些WEB框架，例如Django,Flask,Torando等等，在开发过程中，看过一些文档总会介绍生产环境和开发环境服务器的配置问题，服务器又设计web服务器和">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python中web开发最难懂的WSGI协议，到底包含了哪些内容？">
+<meta property="og:url" content="http://yoursite.com/2017/10/05/python中web开发最难懂的WSGI协议，到底包含了哪些内容？/index.html">
+<meta property="og:site_name" content="Eden&#39;sBlog">
+<meta property="og:description" content="原文出处: https://segmentfault.com/a/1190000011365430 我想大部分Python开发者最先接触到的方向是WEB方向（因为总是有开发者希望马上给自己做个博客出来，例如我），既然是WEB，免不了接触到一些WEB框架，例如Django,Flask,Torando等等，在开发过程中，看过一些文档总会介绍生产环境和开发环境服务器的配置问题，服务器又设计web服务器和">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-05T09:55:38.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python中web开发最难懂的WSGI协议，到底包含了哪些内容？">
+<meta name="twitter:description" content="原文出处: https://segmentfault.com/a/1190000011365430 我想大部分Python开发者最先接触到的方向是WEB方向（因为总是有开发者希望马上给自己做个博客出来，例如我），既然是WEB，免不了接触到一些WEB框架，例如Django,Flask,Torando等等，在开发过程中，看过一些文档总会介绍生产环境和开发环境服务器的配置问题，服务器又设计web服务器和">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/05/python中web开发最难懂的WSGI协议，到底包含了哪些内容？/"/>
+
+
+
+
+
+  <title>python中web开发最难懂的WSGI协议，到底包含了哪些内容？ | Eden'sBlog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/govsb"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Eden'sBlog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/05/python中web开发最难懂的WSGI协议，到底包含了哪些内容？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eden">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eden'sBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python中web开发最难懂的WSGI协议，到底包含了哪些内容？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-05T17:20:25+08:00">
+                2017-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python-WSGI协议-Django/" itemprop="url" rel="index">
+                    <span itemprop="name">python WSGI协议 Django</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文出处: <a href="https://segmentfault.com/a/1190000011365430" target="_blank" rel="external">https://segmentfault.com/a/1190000011365430</a></p>
+<p>我想大部分Python开发者最先接触到的方向是WEB方向（因为总是有开发者希望马上给自己做个博客出<br>来，例如我），既然是WEB，免不了接触到一些WEB框架，例如Django,Flask,Torando等等，在开发<br>过程中，看过一些文档总会介绍生产环境和开发环境服务器的配置问题，服务器又设计web服务器和应<br>用服务器，总而言之，我们碰到最多的，必定是这个词 — WSGI。<br><a id="more"></a></p>
+<p>接下来的文章，会分为以下几个部分：</p>
+<ol>
+<li>WSGI介绍</li>
+</ol>
+<ul>
+<li>1.1 什么是WSGI</li>
+<li>1.2 怎么实现WSGI</li>
+</ul>
+<ol>
+<li>由Django框架分析WSGI</li>
+<li>实际环境使用的wsgi服务器</li>
+</ol>
+<h2 id="1-WSGI介绍"><a href="#1-WSGI介绍" class="headerlink" title="1.WSGI介绍"></a>1.WSGI介绍</h2><h3 id="1-1-什么是WSGI"><a href="#1-1-什么是WSGI" class="headerlink" title="1.1 什么是WSGI"></a>1.1 什么是WSGI</h3><p>首先介绍几个关于WSGI相关的概念</p>
+<p>WSGI：全称是Web Server Gateway Interface，WSGI不是服务器，python模块，框架，API或者<br>任何软件，只是一种规范，描述web server如何与web application通信的规范。server和appli<br>cation的规范在PEP 3333中有具体描述。要实现WSGI协议，必须同时实现web server和web appl<br>ication，当前运行在WSGI协议之上的web框架有Torando,Flask,Django</p>
+<p>uwsgi：与WSGI一样是一种通信协议，是uWSGI服务器的独占协议，用于定义传输信息的类型(type<br>  of information)，每一个uwsgi packet前4byte为传输信息类型的描述，与WSGI协议是两种东<br>  西，据说该协议是fcgi协议的10倍快。</p>
+<p>uWSGI：是一个web服务器，实现了WSGI协议、uwsgi协议、http协议等。</p>
+<p>WSGI协议主要包括server和application两部分：</p>
+<p>WSGI server负责从客户端接收请求，将request转发给application，将application返回的res<br>ponse返回给客户端；<br>WSGI application接收由server转发的request，处理请求，并将处理结果返回给server。appli<br>cati<br>on中可以包括多个栈式的中间件(middlewares)，这些中间件需要同时实现server与application，<br>因此可以在WSGI服务器与WSGI应用之间起调节作用：对服务器来说，中间件扮演应用程序，对应用程<br>序来说，中间件扮演服务器。<br>1<br>2<br>WSGI server负责从客户端接收请求，将request转发给application，将application返回的resp<br>onse返回给客户端；<br>WSGI application接收由server转发的request，处理请求，并将处理结果返回给server。applic<br>ation<br>中可以包括多个栈式的中间件(middlewares)，这些中间件需要同时实现server与application，因<br>此可以在WSGI服务器与WSGI应用之间起调节作用：对服务器来说，中间件扮演应用程序，对应用程序来<br>说，中间件扮演服务器。<br>WSGI协议其实是定义了一种server与application解耦的规范，即可以有多个实现WSGI server的服<br>务器，也可以有多个实现WSGI application的框架，那么就可以选择任意的server和application组<br>合实现自己的web应用。例如uWSGI和Gunicorn都是实现了WSGI server协议的服务器，Django，Fla<br>sk是实现了WSGI application协议的web框架，可以根据项目实际情况搭配使用。</p>
+<p>以上介绍了相关的常识，接下来我们来看看如何简单实现WSGI协议。</p>
+<h3 id="1-2-怎么实现WSGI"><a href="#1-2-怎么实现WSGI" class="headerlink" title="1.2 怎么实现WSGI"></a>1.2 怎么实现WSGI</h3><p>上文说过，实现WSGI协议必须要有wsgi server和application，因此，我们就来实现这两个东西。</p>
+<p>我们来看看官方WSGI使用WSGI的wsgiref模块实现的小demo</p>
+<p>有关于wsgiref的快速入门可以看看这篇博客<br><a href="http://python.jobbole.com/88637/" target="_blank" rel="external">http://python.jobbole.com/88637/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def demo_app(environ,start_response):  </div><div class="line">    from StringIO import StringIO  </div><div class="line">    stdout = StringIO()  </div><div class="line">    print &gt;&gt;stdout, &quot;Hello world!&quot;  </div><div class="line">    print &gt;&gt;stdout  </div><div class="line">    h = environ.items(); h.sort()  </div><div class="line">    for k,v in h:  </div><div class="line">        print &gt;&gt;stdout, k,&apos;=&apos;, repr(v)  </div><div class="line">    start_response(&quot;200 OK&quot;, [(&apos;Content-Type&apos;,&apos;text/plain&apos;)])  </div><div class="line">    return [stdout.getvalue()]</div></pre></td></tr></table></figure>
+<p>实现了一个application，来获取客户端的环境和回调函数两个参数，以及httpd服务端的实现，我们<br>来看看make_server的源代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def make_server(  </div><div class="line">    host, port, app, server_class=WSGIServer, handler_class=WSGIRequestHandler  </div><div class="line">):  </div><div class="line">  &quot;&quot;&quot;Create a new WSGI server listening on `host` and `port` for `app`&quot;&quot;&quot;  </div><div class="line">  server = server_class((host, port), handler_class)  </div><div class="line">  server.set_app(app)  </div><div class="line">  return server</div></pre></td></tr></table></figure>
+<p>接受一系列函数，返回一个server对象,实现还是比较简单，下面我们来看看在django中如何实现其自<br>身的wsgi服务器的。</p>
+<p>下面我们自己来实现一遍：</p>
+<p>WSGI 规定每个 python 程序（Application）必须是一个可调用的对象（实现了<strong>call</strong> 函数的<br>方法或者类），接受两个参数 environ（WSGI 的环境信息） 和 start_response（开始响应请求<br>的函数），并且返回 iterable。几点说明：</p>
+<p>environ 和 start_response 由 http server 提供并实现<br>environ 变量是包含了环境信息的字典<br>Application 内部在返回前调用 start_response<br>start<em>response也是一个 callable，接受两个必须的参数，status（HTTP状态）和 response</em><br>headers（响应消息的头）<br>可调用对象要返回一个值，这个值是可迭代的。</p>
+<p>environ 和 start_response 由 http server 提供并实现<br>environ 变量是包含了环境信息的字典<br>Application 内部在返回前调用 start_response<br>start<em>response也是一个 callable，接受两个必须的参数，status（HTTP状态）和 response</em><br>headers（响应消息的头）<br>可调用对象要返回一个值，这个值是可迭代的。<br>Python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"> # 1. 可调用对象是一个函数</div><div class="line">def application(environ, start_response):</div><div class="line"></div><div class="line">   response_body = &apos;The request method was %s&apos; % environ[&apos;REQUEST_METHOD&apos;]</div><div class="line"></div><div class="line">   # HTTP response code and message</div><div class="line">   status = &apos;200 OK&apos;</div><div class="line"></div><div class="line">   # 应答的头部是一个列表，每对键值都必须是一个 tuple。</div><div class="line">   response_headers = [(&apos;Content-Type&apos;, &apos;text/plain&apos;),</div><div class="line">                       (&apos;Content-Length&apos;, str(len(response_body)))]</div><div class="line"></div><div class="line">   # 调用服务器程序提供的 start_response，填入两个参数</div><div class="line">   start_response(status, response_headers)</div><div class="line"></div><div class="line">   # 返回必须是 iterable</div><div class="line">   return [response_body]</div><div class="line"></div><div class="line"># 2. 可调用对象是一个类</div><div class="line">class AppClass:</div><div class="line">    &quot;&quot;&quot;这里的可调用对象就是 AppClass 这个类，调用它就能生成可以迭代的结果。</div><div class="line">        使用方法类似于：</div><div class="line">        for result in AppClass(env, start_response):</div><div class="line">             do_somthing(result)</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, environ, start_response):</div><div class="line">        self.environ = environ</div><div class="line">        self.start = start_response</div><div class="line"></div><div class="line">    def __iter__(self):</div><div class="line">        status = &apos;200 OK&apos;</div><div class="line">        response_headers = [(&apos;Content-type&apos;, &apos;text/plain&apos;)]</div><div class="line">        self.start(status, response_headers)</div><div class="line">        yield &quot;Hello world!\n&quot;</div><div class="line"></div><div class="line"># 3. 可调用对象是一个实例</div><div class="line">class AppClass:</div><div class="line">    &quot;&quot;&quot;这里的可调用对象就是 AppClass 的实例，使用方法类似于：</div><div class="line">        app = AppClass()</div><div class="line">        for result in app(environ, start_response):</div><div class="line">             do_somthing(result)</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        pass</div><div class="line"></div><div class="line">    def __call__(self, environ, start_response):</div><div class="line">        status = &apos;200 OK&apos;</div><div class="line">        response_headers = [(&apos;Content-type&apos;, &apos;text/plain&apos;)]</div><div class="line">        self.start(status, response_headers)</div><div class="line">        yield &quot;Hello world!\n&quot;</div></pre></td></tr></table></figure></p>
+<p>服务器程序端</p>
+<p>上面已经说过，标准要能够确切地实行，必须要求程序端和服务器端共同遵守。上面提到， envrion<br>和 start_response 都是服务器端提供的。下面就看看，服务器端要履行的义务。</p>
+<p>Python</p>
+<p>准备 environ 参数<br>定义 start_response 函数<br>调用程序端的可调用对象<br>准备 environ 参数<br>定义 start_response 函数<br>调用程序端的可调用对象</p>
+<h2 id="2-由Django框架分析WSGI"><a href="#2-由Django框架分析WSGI" class="headerlink" title="2 由Django框架分析WSGI"></a>2 由Django框架分析WSGI</h2><p>下面我们以django为例，分析一下wsgi的整个流程</p>
+<p>django WSGI application</p>
+<p>WSGI application应该实现为一个可调用iter对象，例如函数、方法、类(包含<strong>call</strong>方法)。需要<br>接收两个参数：一个字典，该字典可以包含了客户端请求的信息以及其他信息，可以认为是请求上下文，<br>一般叫做environment（编码中多简写为environ、env），一个用于发送HTTP响应状态（HTTP stat<br>us）、响应头（HTTP headers）的回调函数,也就是start_response()。通过回调函数将响应状态和<br>响应头返回给server，同时返回响应正文(response body)，响应正文是可迭代的、并包含了多个字符<br>串。</p>
+<p>下面是Django中application的具体实现部分：</p>
+<p>Python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">class WSGIHandler(base.BaseHandler):</div><div class="line">   initLock = Lock()</div><div class="line">   request_class = WSGIRequest</div><div class="line">   def __call__(self, environ, start_response):</div><div class="line">   # 加载中间件</div><div class="line">    if self._request_middleware is None:</div><div class="line">         with self.initLock:</div><div class="line">             try: # Check that middleware is still uninitialized.</div><div class="line">                 if self._request_middleware is None:</div><div class="line">                    self.load_middleware()</div><div class="line">             except: # Unload whatever middleware we got</div><div class="line">                    self._request_middleware = None raise</div><div class="line">     set_script_prefix(get_script_name(environ)) # 请求处理之前发送信号</div><div class="line">     signals.request_started.send(sender=self.__class__, environ=environ)</div><div class="line">     try:</div><div class="line">          request = self.request_class(environ)  </div><div class="line">     except UnicodeDecodeError:</div><div class="line">           logger.warning(&apos;Bad Request (UnicodeDecodeError)&apos;,exc_info=sys.exc_info(), extra=&#123;&apos;status_code&apos;: 400,&#125;</div><div class="line">           response = http.HttpResponseBadRequest()</div><div class="line">     else:</div><div class="line">           response = self.get_response(request)</div><div class="line">     response._handler_class = self.__class__ status = &apos;%s %s&apos; % (response.status_code, response.reason_phrase)</div><div class="line">     response_headers = [(str(k), str(v)) for k, v in response.items()] for c in response.cookies.values(): response_headers.append((str(&apos;Set-Cookie&apos;), str(c.output(header=&apos;&apos;))))</div><div class="line">     # server提供的回调方法，将响应的header和status返回给server</div><div class="line">     start_response(force_str(status), response_headers)</div><div class="line">     if getattr(response, &apos;file_to_stream&apos;, None) is not None and environ.get(&apos;wsgi.file_wrapper&apos;):</div><div class="line">          response = environ[&apos;wsgi.file_wrapper&apos;](response.file_to_stream)</div><div class="line">     return response</div></pre></td></tr></table></figure></p>
+<p>可以看出application的流程包括:加载所有中间件，以及执行框架相关的操作，设置当前线程脚本前缀<br>，发送请求开始信号；处理请求，调用get_response()方法处理当前请求，该方法的的主要逻辑是通过<br>urlconf找到对应的view和callback，按顺序执行各种middleware和callback。调用由server传入<br>的start_response()方法将响应header与status返回给server。返回响应正文</p>
+<p>django WSGI Server</p>
+<p>负责获取http请求，将请求传递给WSGI application，由application处理请求后返回response。<br>以Django内建server为例看一下具体实现。通过runserver运行django<br>项目，在启动时都会调用下面的run方法，创建一个WSGIServer的实例，之后再调用其serve_forever<br>()方法启动服务。</p>
+<p>Python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">def run(addr, port, wsgi_handler, ipv6=False, threading=False):</div><div class="line">   server_address = (addr, port)</div><div class="line">   if threading:</div><div class="line">        httpd_cls = type(str(&apos;WSGIServer&apos;), (socketserver.ThreadingMixIn, WSGIServer), &#123;&#125;)</div><div class="line">   else:</div><div class="line">        httpd_cls = WSGIServer # 这里的wsgi_handler就是WSGIApplication</div><div class="line">   httpd = httpd_cls(server_address, WSGIRequestHandler, ipv6=ipv6)</div><div class="line">    if threading:</div><div class="line">        httpd.daemon_threads = True httpd.set_app(wsgi_handler)</div><div class="line">     httpd.serve_forever()</div><div class="line"></div><div class="line">def run(addr, port, wsgi_handler, ipv6=False, threading=False):</div><div class="line">   server_address = (addr, port)</div><div class="line">   if threading:</div><div class="line">        httpd_cls = type(str(&apos;WSGIServer&apos;), (socketserver.ThreadingMixIn, WSGIServer), &#123;&#125;)</div><div class="line">   else:</div><div class="line">        httpd_cls = WSGIServer # 这里的wsgi_handler就是WSGIApplication</div><div class="line">   httpd = httpd_cls(server_address, WSGIRequestHandler, ipv6=ipv6)</div><div class="line">    if threading:</div><div class="line">        httpd.daemon_threads = True httpd.set_app(wsgi_handler)</div><div class="line">     httpd.serve_forever()</div></pre></td></tr></table></figure></p>
+<p>下面表示WSGI server服务器处理流程中关键的类和方法。</p>
+<p>3029445-fc4e37c4f5585b41</p>
+<p>WSGIServerrun()方法会创建WSGIServer实例，主要作用是接收客户端请求，将请求传递给applica<br>tion，然后将application返回的response返回给客户端。</p>
+<p>创建实例时会指定HTTP请求的handler：WSGIRequestHandler类，通过set_app和get_app方法设置<br>和获取WSGIApplication实例wsgi_handler。</p>
+<p>处理http请求时，调用handler_request方法，会创建WSGIRequestHandler，实例处理http请求。<br>WSGIServer中get_request方法通过socket接受请求数据。</p>
+<p>WSGIRequestHandler由WSGIServer在调用handle_request时创建实例，传入request、cient_ad<br>dress、WSGIServer三个参数<strong>init</strong>方法在实例化同时还会调用自身的handle方法handle方<br>法会创建ServerHandler实例，然后调用其run方法处理请求</p>
+<p>ServerHandlerWSGIRequestHandler在其handle方法中调用run方法，传入self.server.get_a<br>pp()参数，获取WSGIApplication，然后调用实例(<strong>call</strong>)，获取response，其中会传入star<br>t_response回调，用来处理返回的header和status。通过application获取response以后，通过fi<br>nish_response返回response</p>
+<p>WSGIHandlerWSGI协议中的application，接收两个参数，environ字典包含了客户端请求的信息以及<br>其他信息，可以认为是请求上下文，start_response用于发送返回status和header的回调函数</p>
+<p>虽然上面一个WSGI server涉及到多个类实现以及相互引用，但其实原理还是调用WSGIHandler，传入<br>请求参数以及回调方法start_response()，并将响应返回给客户端。</p>
+<h2 id="3-实际环境使用的wsgi服务器"><a href="#3-实际环境使用的wsgi服务器" class="headerlink" title="3 实际环境使用的wsgi服务器"></a>3 实际环境使用的wsgi服务器</h2><p>因为每个web框架都不是专注于实现服务器方面的，因此，在生产环境部署的时候使用的服务器也不会简<br>单的使用web框架自带的服务器，这里，我们来讨论一下用于生产环境的服务器有哪些？</p>
+<h4 id="1-gunicorn"><a href="#1-gunicorn" class="headerlink" title="1.gunicorn"></a>1.gunicorn</h4><p>Gunicorn（从Ruby下面的Unicorn得到的启发）应运而生：依赖Nginx的代理行为，同Nginx进行功能<br>上的分离。由于不需要直接处理用户来的请求（都被Nginx先处理），Gunicorn不需要完成相关的功能<br>，其内部逻辑非常简单：接受从Nginx来的动态请求，处理完之后返回给Nginx，由后者返回给用户。</p>
+<p>由于功能定位很明确，Gunicorn得以用纯Python开发：大大缩短了开发时间的同时，性能上也不会很掉<br>链子。同时，它也可以配合Nginx的代理之外的别的Proxy模块工作，其配置也相应比较简单。</p>
+<p>配置上的简单，大概是它流行的最大的原因。</p>
+<p>###2.uwsgi<br>因为使用C语言开发，会和底层接触的更好，配置也是比较方便，目前和gunicorn两个算是部署时的唯二<br>之选。</p>
+<p>以下是通常的配置文件</p>
+<p>Python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[uwsgi]</div><div class="line">http = $(HOSTNAME):9033</div><div class="line">http-keepalive = 1</div><div class="line">pythonpath = ../</div><div class="line">module = service</div><div class="line">master = 1</div><div class="line">processes = 8</div><div class="line">daemonize = logs/uwsgi.log</div><div class="line">disable-logging = 1</div><div class="line">buffer-size = 16384</div><div class="line">harakiri = 5</div><div class="line">pidfile = uwsgi.pid</div><div class="line">stats = $(HOSTNAME):1733</div></pre></td></tr></table></figure></p>
+<p>运行：uwsgi –ini   conf.ini</p>
+<h3 id="3-fcgi"><a href="#3-fcgi" class="headerlink" title="3.fcgi"></a>3.fcgi</h3><p>不多数，估计使用的人也是比较少，这里只是提一下</p>
+<h3 id="4-bjoern"><a href="#4-bjoern" class="headerlink" title="4.bjoern"></a>4.bjoern</h3><p>Python WSGI界最牛逼性能的Server其中一个是bjoern，纯C，小于1000行代码，就是看不惯uWSGI的<br>冗余自写的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/22/Python实现八大排序算法/" rel="next" title="python实现八大排序算法">
+                <i class="fa fa-chevron-left"></i> python实现八大排序算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMDk3OC83NTI3"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Eden" />
+          <p class="site-author-name" itemprop="name">Eden</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/govsb" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/T1ckster" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      weibo
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=483671599&auto=1&height=66"></iframe>
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-WSGI介绍"><span class="nav-number">1.</span> <span class="nav-text">1.WSGI介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-什么是WSGI"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 什么是WSGI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-怎么实现WSGI"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 怎么实现WSGI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-由Django框架分析WSGI"><span class="nav-number">2.</span> <span class="nav-text">2 由Django框架分析WSGI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-实际环境使用的wsgi服务器"><span class="nav-number">3.</span> <span class="nav-text">3 实际环境使用的wsgi服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-gunicorn"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.gunicorn</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-fcgi"><span class="nav-number">3.1.</span> <span class="nav-text">3.fcgi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-bjoern"><span class="nav-number">3.2.</span> <span class="nav-text">4.bjoern</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eden</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共5.4k字</span>
+</div>
+
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
