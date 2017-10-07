@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="threading.ThreadThread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继承threading.Thread类来创建线程的例子：">
+<meta name="description" content="threading.Thread原文出处：http://python.jobbole.com/81546/ Thread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继">
 <meta name="keywords" content="threading">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python模块学习：threading多线控制和处理。">
 <meta property="og:url" content="http://yoursite.com/2017/10/07/python模块学习：threading多线控制和处理/index.html">
 <meta property="og:site_name" content="Eden&#39;sBlog">
-<meta property="og:description" content="threading.ThreadThread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继承threading.Thread类来创建线程的例子：">
+<meta property="og:description" content="threading.Thread原文出处：http://python.jobbole.com/81546/ Thread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-07T10:33:27.408Z">
+<meta property="og:updated_time" content="2017-10-07T10:37:24.181Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python模块学习：threading多线控制和处理。">
-<meta name="twitter:description" content="threading.ThreadThread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继承threading.Thread类来创建线程的例子：">
+<meta name="twitter:description" content="threading.Thread原文出处：http://python.jobbole.com/81546/ Thread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继">
 
 
 
@@ -373,7 +373,8 @@
       
 
       
-        <h2 id="threading-Thread"><a href="#threading-Thread" class="headerlink" title="threading.Thread"></a>threading.Thread</h2><p>Thread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：<br>一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在<br>它的初始化函数（<strong>init</strong>）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过<br>继承threading.Thread类来创建线程的例子：<br><a id="more"></a></p>
+        <h2 id="threading-Thread"><a href="#threading-Thread" class="headerlink" title="threading.Thread"></a>threading.Thread</h2><p>原文出处：<a href="http://python.jobbole.com/81546/" target="_blank" rel="external">http://python.jobbole.com/81546/</a></p>
+<p>Thread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：<br>一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在<br>它的初始化函数（<strong>init</strong>）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过<br>继承threading.Thread类来创建线程的例子：<br><a id="more"></a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import threading, time, random</div><div class="line">count = 0</div><div class="line">class Counter(threading.Thread):</div><div class="line">    def __init__(self, lock, threadName):</div><div class="line">        &apos;&apos;&apos;@summary: 初始化对象。</div><div class="line"></div><div class="line">        @param lock: 琐对象。</div><div class="line">        @param threadName: 线程名称。</div><div class="line">        &apos;&apos;&apos;</div><div class="line">        super(Counter, self).__init__(name = threadName)  #注意：一定要显式的调用父类的初始</div><div class="line">化函数。</div><div class="line">        self.lock = lock</div><div class="line"></div><div class="line">    def run(self):</div><div class="line">        &apos;&apos;&apos;@summary: 重写父类run方法，在线程启动后执行该方法内的代码。</div><div class="line">        &apos;&apos;&apos;</div><div class="line">        global count</div><div class="line">        self.lock.acquire()</div><div class="line">        for i in xrange(10000):</div><div class="line">            count = count + 1</div><div class="line">        self.lock.release()</div><div class="line">lock = threading.Lock()</div><div class="line">for i in range(5):</div><div class="line">    Counter(lock, &quot;thread-&quot; + str(i)).start()</div><div class="line">time.sleep(2)	#确保线程都执行完毕</div><div class="line">print(count)</div></pre></td></tr></table></figure>
 <p>在代码中，我们创建了一个Counter类，它继承了threading.Thread。初始化函数接收两个参数<br>，一个是琐对象，另一个是线程的名称。在Counter中，重写了从父类继承的run方法，run方法将<br>一个全局变量逐一的增加10000。在接下来的代码中，创建了五个Counter对象，分别调用其start<br>方法。最后打印结果。这里要说明一下run方法 和start方法: 它们都是从Thread继承而来的，<br>run()方法将在线程开启后执行，可以把相关的逻辑写到run方法中（通常把run方法称为活动<br>[Activity]。）；start()方法用于启动线程。</p>
 <p>再看看另外一种创建线程的方法：</p>
@@ -570,7 +571,7 @@
             
             
             <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
+              <a href="/categries/index.html">
                 <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">分类</span>
               </a>
