@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="threading," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="threading.ThreadThread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继承threading.Thread类来创建线程的例子：">
+<meta name="keywords" content="threading">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python模块学习：threading多线控制和处理。">
+<meta property="og:url" content="http://yoursite.com/2017/10/07/python模块学习：threading多线控制和处理/index.html">
+<meta property="og:site_name" content="Eden&#39;sBlog">
+<meta property="og:description" content="threading.ThreadThread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继承threading.Thread类来创建线程的例子：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-07T10:33:27.408Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python模块学习：threading多线控制和处理。">
+<meta name="twitter:description" content="threading.ThreadThread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在它的初始化函数（init）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过继承threading.Thread类来创建线程的例子：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/07/python模块学习：threading多线控制和处理/"/>
+
+
+
+
+
+  <title>python模块学习：threading多线控制和处理。 | Eden'sBlog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/govsb"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Eden'sBlog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/07/python模块学习：threading多线控制和处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eden">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eden'sBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python模块学习：threading多线控制和处理。</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T18:19:29+08:00">
+                2017-10-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="threading-Thread"><a href="#threading-Thread" class="headerlink" title="threading.Thread"></a>threading.Thread</h2><p>Thread 是threading模块中最重要的类之一，可以使用它来创建线程。有两种方式来创建线程：<br>一种是通过继承Thread类，重写它的run方法；另一种是创建一个threading.Thread对象，在<br>它的初始化函数（<strong>init</strong>）中将可调用对象作为参数传入。下面分别举例说明。先来看看通过<br>继承threading.Thread类来创建线程的例子：<br><a id="more"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import threading, time, random</div><div class="line">count = 0</div><div class="line">class Counter(threading.Thread):</div><div class="line">    def __init__(self, lock, threadName):</div><div class="line">        &apos;&apos;&apos;@summary: 初始化对象。</div><div class="line"></div><div class="line">        @param lock: 琐对象。</div><div class="line">        @param threadName: 线程名称。</div><div class="line">        &apos;&apos;&apos;</div><div class="line">        super(Counter, self).__init__(name = threadName)  #注意：一定要显式的调用父类的初始</div><div class="line">化函数。</div><div class="line">        self.lock = lock</div><div class="line"></div><div class="line">    def run(self):</div><div class="line">        &apos;&apos;&apos;@summary: 重写父类run方法，在线程启动后执行该方法内的代码。</div><div class="line">        &apos;&apos;&apos;</div><div class="line">        global count</div><div class="line">        self.lock.acquire()</div><div class="line">        for i in xrange(10000):</div><div class="line">            count = count + 1</div><div class="line">        self.lock.release()</div><div class="line">lock = threading.Lock()</div><div class="line">for i in range(5):</div><div class="line">    Counter(lock, &quot;thread-&quot; + str(i)).start()</div><div class="line">time.sleep(2)	#确保线程都执行完毕</div><div class="line">print(count)</div></pre></td></tr></table></figure>
+<p>在代码中，我们创建了一个Counter类，它继承了threading.Thread。初始化函数接收两个参数<br>，一个是琐对象，另一个是线程的名称。在Counter中，重写了从父类继承的run方法，run方法将<br>一个全局变量逐一的增加10000。在接下来的代码中，创建了五个Counter对象，分别调用其start<br>方法。最后打印结果。这里要说明一下run方法 和start方法: 它们都是从Thread继承而来的，<br>run()方法将在线程开启后执行，可以把相关的逻辑写到run方法中（通常把run方法称为活动<br>[Activity]。）；start()方法用于启动线程。</p>
+<p>再看看另外一种创建线程的方法：</p>
+<p>Python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import threading, time, random</div><div class="line">count = 0</div><div class="line">lock = threading.Lock()</div><div class="line">def doAdd():</div><div class="line">    &apos;&apos;&apos;@summary: 将全局变量count 逐一的增加10000。</div><div class="line">    &apos;&apos;&apos;</div><div class="line">    global count, lock</div><div class="line">    lock.acquire()</div><div class="line">    for i in xrange(10000):</div><div class="line">        count = count + 1</div><div class="line">    lock.release()</div><div class="line">for i in range(5):</div><div class="line">    threading.Thread(target = doAdd, args = (), name = &apos;thread-&apos; + str(i)).start()</div><div class="line">time.sleep(2)	#确保线程都执行完毕</div><div class="line">print(count)</div></pre></td></tr></table></figure></p>
+<p>在这段代码中，我们定义了方法doAdd，它将全局变量count 逐一的增加10000。然后创建了5个Threa<br>d对象，把函数对象doAdd 作为参数传给它的初始化函数，再调用Thread对象的start方法，线程启动<br>后将执行doAdd函数。这里有必要介绍一下threading.Thread类的初始化函数原型：</p>
+<p>def <strong>init</strong>(self, group=None, target=None, name=None, args=(), kwargs={})</p>
+<p>　　参数group是预留的，用于将来扩展；<br>　　参数target是一个可调用对象（也称为活动[activity]），在线程启动后执行；<br>　　参数name是线程的名字。默认值为“Thread-N“，N是一个数字。<br>　　参数args和kwargs分别表示调用target时的参数列表和关键字参数。<br>Thread类还定义了以下常用方法与属性：</p>
+<p>Thread.getName()</p>
+<p>Thread.setName()</p>
+<p>Thread.name</p>
+<p>用于获取和设置线程的名称。</p>
+<p>Thread.ident</p>
+<p>获取线程的标识符。线程标识符是一个非零整数，只有在调用了start()方法之后该属性才有效，否则<br>它只返回None。</p>
+<p>Thread.is_alive()</p>
+<p>Thread.isAlive()</p>
+<p>判断线程是否是激活的（alive）。从调用start()方法启动线程，到run()方法执行完毕或遇到未处<br>理异常而中断 这段时间内，线程是激活的。</p>
+<p>Thread.join([timeout])</p>
+<p>调用Thread.join将会使主调线程堵塞，直到被调用线程运行结束或超时。参数timeout是一个数值类<br>型，表示超时时间，如果未提供该参数，那么主调线程将一直堵塞到被调线程结束。下面举个例子说明<br>join()的使用：</p>
+<h4 id="Python2"><a href="#Python2" class="headerlink" title="Python2"></a>Python2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import threading, time</div><div class="line">def doWaiting():</div><div class="line">    print &apos;start waiting:&apos;, time.strftime(&apos;%H:%M:%S&apos;)</div><div class="line">    time.sleep(3)</div><div class="line">    print &apos;stop waiting&apos;, time.strftime(&apos;%H:%M:%S&apos;)</div><div class="line">thread1 = threading.Thread(target = doWaiting)</div><div class="line">thread1.start()</div><div class="line">time.sleep(1)  #确保线程thread1已经启动</div><div class="line">print &apos;start join&apos;</div><div class="line">thread1.join()	#将一直堵塞，直到thread1运行结束。</div><div class="line">print &apos;end join&apos;</div></pre></td></tr></table></figure>
+<p>threading.RLock和threading.Lock</p>
+<p>在threading模块中，定义两种类型的琐：threading.Lock和threading.RLock。它们之间有一点细微的区别，通过比较下面两段代码来说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">import threading</div><div class="line">lock = threading.Lock()	#Lock对象</div><div class="line">lock.acquire()</div><div class="line">lock.acquire()  #产生了死琐。</div><div class="line">lock.release()</div><div class="line">lock.release()</div><div class="line"></div><div class="line">import threading</div><div class="line">rLock = threading.RLock()  #RLock对象</div><div class="line">rLock.acquire()</div><div class="line">rLock.acquire()	#在同一线程内，程序不会堵塞。</div><div class="line">rLock.release()</div><div class="line">rLock.release()</div></pre></td></tr></table></figure>
+<p>这两种琐的主要区别是：RLock允许在同一线程中被多次acquire。而Lock却不允许这种情况。注意：<br>如果使用RLock，那么acquire和release必须成对出现，即调用了n次acquire，必须调用n次的re<br>lease才能真正释放所占用的琐。</p>
+<h4 id="threading-Condition"><a href="#threading-Condition" class="headerlink" title="threading.Condition"></a>threading.Condition</h4><p>可以把Condiftion理解为一把高级的琐，它提供了比Lock,<br>一个琐对象（默认是RLock），可以在创建Condigtion对象的时候把琐对象作为参数传入。Condit<br>ion也提供了acquire, release方法，其含义与琐的acquire, release方法一致，其实它只是简<br>单的调用内部琐对象的对应的方法而已。Condition还提供了如方法(特别要注意：这些方法只有在<br>占用琐(acquire)之后才能调用，否则将会报RuntimeError异常。)：</p>
+<h4 id="Condition-wait-timeout"><a href="#Condition-wait-timeout" class="headerlink" title="Condition.wait([timeout]):"></a>Condition.wait([timeout]):</h4><p>wait方法释放内部所占用的琐，同时线程被挂起，直至接收到通知被唤醒或超时（如果提供了timeo<br>ut参数的话）。当线程被唤醒并重新占有琐的时候，程序才会继续执行下去。</p>
+<h4 id="Condition-notify"><a href="#Condition-notify" class="headerlink" title="Condition.notify():"></a>Condition.notify():</h4><p>唤醒一个挂起的线程（如果存在挂起的线程）。注意：notify()方法不会释放所占用的琐。</p>
+<h4 id="Condition-notify-all"><a href="#Condition-notify-all" class="headerlink" title="Condition.notify_all()"></a>Condition.notify_all()</h4><h4 id="Condition-notifyAll"><a href="#Condition-notifyAll" class="headerlink" title="Condition.notifyAll()"></a>Condition.notifyAll()</h4><p>唤醒所有挂起的线程（如果存在挂起的线程）。注意：这些方法不会释放所占用的琐。</p>
+<p>现在写个捉迷藏的游戏来具体介绍threading.Condition的基本使用。假设这个游戏由两个人来玩，<br>一个藏(Hider)，一个找(Seeker)。游戏的规则如下：1. 游戏开始之后，Seeker先把自己眼睛蒙上<br>，蒙上眼睛后，就通知Hider；2. Hider接收通知后开始找地方将自己藏起来，藏好之后，再通知Se<br>eker可以找了； 3. Seeker接收到通知之后，就开始找Hider。Hider和Seeker都是独立的个体，<br>在程序中用两个独立的线程来表示，在游戏过程中，两者之间的行为有一定的时序关系，我们通过C<br>ondition来控制这种时序关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">#---- Condition</div><div class="line">#---- 捉迷藏的游戏</div><div class="line">import threading, time</div><div class="line">class Hider(threading.Thread):</div><div class="line">    def __init__(self, cond, name):</div><div class="line">        super(Hider, self).__init__()</div><div class="line">        self.cond = cond</div><div class="line">        self.name = name</div><div class="line"></div><div class="line">    def run(self):</div><div class="line">        time.sleep(1) #确保先运行Seeker中的方法</div><div class="line"></div><div class="line">        self.cond.acquire() #b</div><div class="line">        print self.name + &apos;: 我已经把眼睛蒙上了&apos;</div><div class="line">        self.cond.notify()</div><div class="line">        self.cond.wait() #c</div><div class="line">                         #f</div><div class="line">        print self.name + &apos;: 我找到你了 ~_~&apos;</div><div class="line">        self.cond.notify()</div><div class="line">        self.cond.release()</div><div class="line">                            #g</div><div class="line">        print self.name + &apos;: 我赢了&apos;   #h</div><div class="line"></div><div class="line">class Seeker(threading.Thread):</div><div class="line">    def __init__(self, cond, name):</div><div class="line">        super(Seeker, self).__init__()</div><div class="line">        self.cond = cond</div><div class="line">        self.name = name</div><div class="line">    def run(self):</div><div class="line">        self.cond.acquire()</div><div class="line">        self.cond.wait()    #a    #释放对琐的占用，同时线程挂起在这里，直到被notify并重新占</div><div class="line">有琐。</div><div class="line">                            #d</div><div class="line">        print self.name + &apos;: 我已经藏好了，你快来找我吧&apos;</div><div class="line">        self.cond.notify()</div><div class="line">        self.cond.wait()    #e</div><div class="line">                            #h</div><div class="line">        self.cond.release()</div><div class="line">        print self.name + &apos;: 被你找到了，哎~~~&apos;</div><div class="line"></div><div class="line">cond = threading.Condition()</div><div class="line">seeker = Seeker(cond, &apos;seeker&apos;)</div><div class="line">hider = Hider(cond, &apos;hider&apos;)</div><div class="line">seeker.start()</div><div class="line">hider.start()</div></pre></td></tr></table></figure>
+<h2 id="threading-Event"><a href="#threading-Event" class="headerlink" title="threading.Event"></a>threading.Event</h2><p>Event实现与Condition类似的功能，不过比Condition简单一点。它通过维护内部的标识符来实现线程间的同步问题。（threading.Event和.NET中的System.Threading.ManualResetEvent类实现同样的功能。）</p>
+<p>Event.wait([timeout])</p>
+<p>堵塞线程，直到Event对象内部标识位被设为True或超时（如果提供了参数timeout）。</p>
+<h2 id="Event-set"><a href="#Event-set" class="headerlink" title="Event.set()"></a>Event.set()</h2><p>将标识位设为Ture</p>
+<h2 id="Event-clear"><a href="#Event-clear" class="headerlink" title="Event.clear()"></a>Event.clear()</h2><p>将标识伴设为False。</p>
+<h2 id="Event-isSet"><a href="#Event-isSet" class="headerlink" title="Event.isSet()"></a>Event.isSet()</h2><p>判断标识位是否为Ture。</p>
+<p>下面使用Event来实现捉迷藏的游戏(可能用Event来实现不是很形象)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">#---- Event</div><div class="line">#---- 捉迷藏的游戏</div><div class="line">import threading, time</div><div class="line">class Hider(threading.Thread):</div><div class="line">    def __init__(self, cond, name):</div><div class="line">        super(Hider, self).__init__()</div><div class="line">        self.cond = cond</div><div class="line">        self.name = name</div><div class="line"></div><div class="line">    def run(self):</div><div class="line">        time.sleep(1) #确保先运行Seeker中的方法</div><div class="line"></div><div class="line">        print self.name + &apos;: 我已经把眼睛蒙上了&apos;</div><div class="line"></div><div class="line">        self.cond.set()</div><div class="line"></div><div class="line">        time.sleep(1)</div><div class="line"></div><div class="line">        self.cond.wait()</div><div class="line">        print self.name + &apos;: 我找到你了 ~_~&apos;</div><div class="line"></div><div class="line">        self.cond.set()</div><div class="line"></div><div class="line">        print self.name + &apos;: 我赢了&apos;</div><div class="line"></div><div class="line">class Seeker(threading.Thread):</div><div class="line">    def __init__(self, cond, name):</div><div class="line">        super(Seeker, self).__init__()</div><div class="line">        self.cond = cond</div><div class="line">        self.name = name</div><div class="line">    def run(self):</div><div class="line">        self.cond.wait()</div><div class="line"></div><div class="line">        print self.name + &apos;: 我已经藏好了，你快来找我吧&apos;</div><div class="line">        self.cond.set()</div><div class="line"></div><div class="line">        time.sleep(1)</div><div class="line">        self.cond.wait()</div><div class="line"></div><div class="line">        print self.name + &apos;: 被你找到了，哎~~~&apos;</div><div class="line"></div><div class="line">cond = threading.Event()</div><div class="line">seeker = Seeker(cond, &apos;seeker&apos;)</div><div class="line">hider = Hider(cond, &apos;hider&apos;)</div><div class="line">seeker.start()</div><div class="line">hider.start()</div></pre></td></tr></table></figure>
+<h2 id="threading-Timer"><a href="#threading-Timer" class="headerlink" title="threading.Timer"></a>threading.Timer</h2><p>threading.Timer是threading.Thread的子类，可以在指定时间间隔后执行某个操作。下面是Python手册上提供的一个例子：</p>
+<p>Python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def hello():</div><div class="line">    print &quot;hello, world&quot;</div><div class="line">t = Timer(3, hello)</div><div class="line">t.start() # 3秒钟之后执行hello函数。</div></pre></td></tr></table></figure></p>
+<p>threading模块中还有一些常用的方法没有介绍：</p>
+<h4 id="threading-active-count"><a href="#threading-active-count" class="headerlink" title="threading.active_count()"></a>threading.active_count()</h4><h4 id="threading-activeCount"><a href="#threading-activeCount" class="headerlink" title="threading.activeCount()"></a>threading.activeCount()</h4><p>获取当前活动的(alive)线程的个数。</p>
+<h4 id="threading-current-thread"><a href="#threading-current-thread" class="headerlink" title="threading.current_thread()"></a>threading.current_thread()</h4><h4 id="threading-currentThread"><a href="#threading-currentThread" class="headerlink" title="threading.currentThread()"></a>threading.currentThread()</h4><p>获取当前的线程对象（Thread object）。</p>
+<h4 id="threading-enumerate"><a href="#threading-enumerate" class="headerlink" title="threading.enumerate()"></a>threading.enumerate()</h4><p>获取当前所有活动线程的列表。</p>
+<h4 id="threading-settrace-func"><a href="#threading-settrace-func" class="headerlink" title="threading.settrace(func)"></a>threading.settrace(func)</h4><p>设置一个跟踪函数，用于在run()执行之前被调用。</p>
+<h4 id="threading-setprofile-func"><a href="#threading-setprofile-func" class="headerlink" title="threading.setprofile(func)"></a>threading.setprofile(func)</h4><p>设置一个跟踪函数，用于在run()执行完毕之后调用。</p>
+<p>threading模块的内容很多，一篇文章很难写全，更多关于threading模块的信息，请查询Python手册 threading模块。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/threading/" rel="tag"># threading</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/05/python中web开发最难懂的WSGI协议，到底包含了哪些内容？/" rel="next" title="python中web开发最难懂的WSGI协议，到底包含了哪些内容？">
+                <i class="fa fa-chevron-left"></i> python中web开发最难懂的WSGI协议，到底包含了哪些内容？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMDk3OC83NTI3"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Eden" />
+          <p class="site-author-name" itemprop="name">Eden</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/govsb" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/T1ckster" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      weibo
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=483671599&auto=1&height=66"></iframe>
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#threading-Thread"><span class="nav-number">1.</span> <span class="nav-text">threading.Thread</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python2"><span class="nav-number">1.0.1.</span> <span class="nav-text">Python2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#threading-Condition"><span class="nav-number">1.0.2.</span> <span class="nav-text">threading.Condition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Condition-wait-timeout"><span class="nav-number">1.0.3.</span> <span class="nav-text">Condition.wait([timeout]):</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Condition-notify"><span class="nav-number">1.0.4.</span> <span class="nav-text">Condition.notify():</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Condition-notify-all"><span class="nav-number">1.0.5.</span> <span class="nav-text">Condition.notify_all()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Condition-notifyAll"><span class="nav-number">1.0.6.</span> <span class="nav-text">Condition.notifyAll()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#threading-Event"><span class="nav-number">2.</span> <span class="nav-text">threading.Event</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Event-set"><span class="nav-number">3.</span> <span class="nav-text">Event.set()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Event-clear"><span class="nav-number">4.</span> <span class="nav-text">Event.clear()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Event-isSet"><span class="nav-number">5.</span> <span class="nav-text">Event.isSet()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#threading-Timer"><span class="nav-number">6.</span> <span class="nav-text">threading.Timer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#threading-active-count"><span class="nav-number">6.0.1.</span> <span class="nav-text">threading.active_count()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#threading-activeCount"><span class="nav-number">6.0.2.</span> <span class="nav-text">threading.activeCount()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#threading-current-thread"><span class="nav-number">6.0.3.</span> <span class="nav-text">threading.current_thread()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#threading-currentThread"><span class="nav-number">6.0.4.</span> <span class="nav-text">threading.currentThread()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#threading-enumerate"><span class="nav-number">6.0.5.</span> <span class="nav-text">threading.enumerate()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#threading-settrace-func"><span class="nav-number">6.0.6.</span> <span class="nav-text">threading.settrace(func)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#threading-setprofile-func"><span class="nav-number">6.0.7.</span> <span class="nav-text">threading.setprofile(func)</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eden</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共7.7k字</span>
+</div>
+
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
