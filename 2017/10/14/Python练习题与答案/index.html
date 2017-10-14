@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string_reverse(‘abcdefg’)，返回’gfedcba’12345def string_reverse(input_str):    return input_str[::-1]print(string_reverse(&apos;nice&apos;))">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python练习题与答案">
+<meta property="og:url" content="http://yoursite.com/2017/10/14/Python练习题与答案/index.html">
+<meta property="og:site_name" content="Eden&#39;sBlog">
+<meta property="og:description" content="用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string_reverse(‘abcdefg’)，返回’gfedcba’12345def string_reverse(input_str):    return input_str[::-1]print(string_reverse(&apos;nice&apos;))">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-14T07:58:13.997Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python练习题与答案">
+<meta name="twitter:description" content="用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string_reverse(‘abcdefg’)，返回’gfedcba’12345def string_reverse(input_str):    return input_str[::-1]print(string_reverse(&apos;nice&apos;))">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/14/Python练习题与答案/"/>
+
+
+
+
+
+  <title>Python练习题与答案 | Eden'sBlog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/govsb"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Eden'sBlog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/14/Python练习题与答案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eden">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eden'sBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python练习题与答案</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-14T15:19:04+08:00">
+                2017-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string-reverse-‘abcdefg’-，返回’gfedcba’"><a href="#用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string-reverse-‘abcdefg’-，返回’gfedcba’" class="headerlink" title="用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string_reverse(‘abcdefg’)，返回’gfedcba’"></a>用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string_reverse(‘abcdefg’)，返回’gfedcba’</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">string_reverse</span><span class="params">(input_str)</span>:</span></div><div class="line">    <span class="keyword">return</span> input_str[::<span class="number">-1</span>]</div><div class="line"></div><div class="line"></div><div class="line">print(string_reverse(<span class="string">'nice'</span>))</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="Python函数中经常有-args，-kwargs-这两个参数，它们是什么意思，为什么要使用它们？"><a href="#Python函数中经常有-args，-kwargs-这两个参数，它们是什么意思，为什么要使用它们？" class="headerlink" title="Python函数中经常有 args，*kwargs 这两个参数，它们是什么意思，为什么要使用它们？"></a>Python函数中经常有 <em>args，*</em>kwargs 这两个参数，它们是什么意思，为什么要使用它们？</h3><p>在函数定义中使用<em>args和kwargs传递可变长参数</em>args用作传递非命名键值可变长参数列表（位置参数）; kwargs用作传递键值可变长参数列表</p>
+<p>当函数的参数不确定时，可以使用<em>args 和**kwargs来 传递可变参数。
+</em>args储存可变的位置参数，它会接收任意多个参数并把这些参数作为元组传递给函数。**kwargs存储可变的关键字参数，允许你使用没有事先定义的参数名，将接收到任意多个关键字参数作为字典传递给函数。<br>注意函数的参数的顺序：args必须在kwargs前面，调用函数传递参数也必须依照此顺序</p>
+<h3 id="Python中的变量作用域（变量查找顺序）。"><a href="#Python中的变量作用域（变量查找顺序）。" class="headerlink" title="Python中的变量作用域（变量查找顺序）。"></a>Python中的变量作用域（变量查找顺序）。</h3><p>local 局部变量—&gt;enclosed 闭包作用域 —-&gt; Global 全局—-&gt;built-in变量</p>
+<h3 id="描述Python-GIL的概念，-以及它对python多线程的影响？"><a href="#描述Python-GIL的概念，-以及它对python多线程的影响？" class="headerlink" title="描述Python GIL的概念， 以及它对python多线程的影响？"></a>描述Python GIL的概念， 以及它对python多线程的影响？</h3><p>GIL：全局解释器锁。每个线程在执行的过程都需要先获取GIL，保证同一时刻只有一个线程可以执行字节码。<br>线程释放GIL锁的情况：<br>在IO操作等可能会引起阻塞的system call之前,可以暂时释放GIL,但在执行完毕后,必须重新获取GIL<br>Python 3.x使用计时器（执行时间达到阈值后，当前线程释放GIL）或Python 2.x，tickets计数达到100</p>
+<p>Python使用多进程是可以利用多核的CPU资源的。</p>
+<h3 id="is和-的区别是？"><a href="#is和-的区别是？" class="headerlink" title="is和==的区别是？"></a>is和==的区别是？</h3><p>Python中的对象包含三要素：id、type、value<br>其中id用来唯一标识一个对象，type标识对象的类型，value是对象的值<br>is判断的是a对象是否就是b对象，是通过id来判断的<br>==判断的是a对象的值是否和b对象的值相等，是通过value来判断的</p>
+<p>只有数值型和字符串型的情况下，a is b才为True，当a和b是tuple，list，dict或set型时，a is b为False。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">a = <span class="number">1</span></div><div class="line">b = <span class="number">1</span></div><div class="line"></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># True</span></div><div class="line">a == b <span class="comment"># True</span></div><div class="line"></div><div class="line">a = <span class="string">'abc'</span></div><div class="line">b = <span class="string">'abc'</span></div><div class="line"></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># True</span></div><div class="line">a == b <span class="comment"># True</span></div><div class="line"></div><div class="line">a = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</div><div class="line">b = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</div><div class="line">a == b <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># False</span></div></pre></td></tr></table></figure></p>
+<h3 id="能简单说一下你了解的socket吗？"><a href="#能简单说一下你了解的socket吗？" class="headerlink" title="能简单说一下你了解的socket吗？"></a>能简单说一下你了解的socket吗？</h3><p>我们知道两个进程如果需要进行通讯最基本的一个前提能能够唯一的标示一个进程，在本地进程通讯<br>中我们可以使用PID来唯一标示一个进程，但PID只在本地唯一，网络中的两个进程PID冲突几率很大<br>，这时候我们需要另辟它径了，我们知道IP层的ip地址可以唯一标示主机，而TCP层协议和端口号可<br>以唯一标示主机的一个进程，这样我们可以利用ip地址＋协议＋端口号唯一标示网络中的一个进程。</p>
+<p>能够唯一标示网络中的进程后，它们就可以利用socket进行通信了，什么是socket呢？我们经常把<br>socket翻译为套接字，socket是在应用层和传输层之间的一个抽象层，它把TCP/IP层复杂的操作抽<br>象为几个简单的接口供应用层调用已实现进程在网络中通信。</p>
+<h3 id="如何用列表生成式生成-1-4-9-16-25-36-49-64-81-100-？"><a href="#如何用列表生成式生成-1-4-9-16-25-36-49-64-81-100-？" class="headerlink" title="如何用列表生成式生成[1,4,9,16,25,36,49,64,81,100]？"></a>如何用列表生成式生成[1,4,9,16,25,36,49,64,81,100]？</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</div></pre></td></tr></table></figure>
+<h3 id="生成器是什么？有什么作用？请写出一个生成器"><a href="#生成器是什么？有什么作用？请写出一个生成器" class="headerlink" title="生成器是什么？有什么作用？请写出一个生成器"></a>生成器是什么？有什么作用？请写出一个生成器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">a = ( i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">11</span>))</div></pre></td></tr></table></figure>
+<p>边循环边计算，保存的是算法，每次调用会执行一次算法。</p>
+<p>Python使用生成器对延迟操作提供了支持。所谓延迟操作，是指在需要的时候才产生结果，而不是<br>立即产生结果。这也是生成器的主要好处。</p>
+<p>生成器的唯一注意事项就是：生成器只能遍历一次</p>
+<p>Python有两种不同的方式提供生成器：</p>
+<p>生成器函数：常规函数定义，但是，使用yield语句而不是return语句返回结果。yield语句一次返<br>回一个结果，在每个结果中间，挂起函数的状态，以便下次重它离开的地方继续执行<br>生成器表达式：类似于列表推导，但是，生成器返回按需产生结果的一个对象，而不是一次构建一个<br>结果列表</p>
+<p>def gensquares(N):<br>    for i in range(N):<br>        yield i ** 2</p>
+<p>for item in gensquares(5):<br>    print(item)</p>
+<h3 id="关于-python-程序的运行性能方面，有什么手段能提升性能？"><a href="#关于-python-程序的运行性能方面，有什么手段能提升性能？" class="headerlink" title="关于 python 程序的运行性能方面，有什么手段能提升性能？"></a>关于 python 程序的运行性能方面，有什么手段能提升性能？</h3><p>io密集型用多线程<br>计算密集型用进程<br>1、使用多进程，充分利用机器的多核性能<br>2、对于性能影响较大的部分代码，可以使用C或C++编写<br>3、对于IO阻塞造成的性能影响，可以使用IO多路复用来解决<br>4、尽量使用python的内建函数<br>5、尽量使用局部变量</p>
+<p>(str.split()字符串的切割）</p>
+<h3 id="将字符串：”k-1-k1-2-k2-3-k3-4”，处理成-python-字典：-k-1-k1-2-…"><a href="#将字符串：”k-1-k1-2-k2-3-k3-4”，处理成-python-字典：-k-1-k1-2-…" class="headerlink" title="将字符串：”k:1|k1:2|k2:3|k3:4”，处理成 python 字典：{k:1, k1:2, … }"></a>将字符串：”k:1|k1:2|k2:3|k3:4”，处理成 python 字典：{k:1, k1:2, … }</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">str1 = <span class="string">"k:1|k1:2|k2:3|k3:4"</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">str2dict</span><span class="params">(str1)</span>:</span></div><div class="line">    dict1 = &#123;&#125;</div><div class="line">    <span class="keyword">for</span> iterms <span class="keyword">in</span> str1.split(<span class="string">'|'</span>):</div><div class="line">        key,value = iterms.split(<span class="string">':'</span>)</div><div class="line">        dict1[key] = value</div><div class="line">    <span class="keyword">return</span> dict1</div></pre></td></tr></table></figure>
+<h3 id="1-or-2-和-1-and-2-分别输出什么？"><a href="#1-or-2-和-1-and-2-分别输出什么？" class="headerlink" title="1 or 2   和   1 and 2 分别输出什么？"></a>1 or 2   和   1 and 2 分别输出什么？</h3><p>or 和 and 都是从做往右看</p>
+<p>or 只要左边不为0就返回左边的值，他就不会去看右边的值。如果左边为0，他会去看右边的值右边<br>值为0就返回0，右边不为0就返回右边的值。</p>
+<p>and 只要左边为0就不看右边了，直接返回0。如果左边不为0，右边为0就返回0。如果左边不为0，<br>他会去看右边，右边不为0就返回右边的值。</p>
+<h3 id="看代码"><a href="#看代码" class="headerlink" title="看代码"></a>看代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">value = <span class="string">"B"</span> <span class="keyword">and</span> <span class="string">"A"</span> <span class="keyword">or</span> <span class="string">"C"</span></div><div class="line">print(value)</div><div class="line">也是从左向右看</div><div class="line"></div><div class="line"><span class="comment"># A</span></div><div class="line"><span class="comment"># 整个式子 不断去向右查看，直到能确定为真就停下来</span></div></pre></td></tr></table></figure>
+<h3 id="看代码写结果"><a href="#看代码写结果" class="headerlink" title="看代码写结果"></a>看代码写结果</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">v1 = [i % <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>)]</div><div class="line">v2 = (i % <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line">print(v1,v2)</div><div class="line"></div><div class="line">v1 = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>] 为列表生成式</div><div class="line">v2 = 为&lt;generator object &lt;genexpr&gt; at <span class="number">0x00E4F990</span>&gt;为生成式</div></pre></td></tr></table></figure>
+<h3 id="输出以下结果"><a href="#输出以下结果" class="headerlink" title="输出以下结果"></a>输出以下结果</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>,<span class="number">0</span>,<span class="number">1</span>):</div><div class="line">    print(i)</div></pre></td></tr></table></figure>
+<p>无</p>
+<h3 id="请将-“1-2-3”，变成-“1”-”2”-”3”-。将-‘q’-‘w’-‘e’-‘r’-变成-‘q-w-e-r’"><a href="#请将-“1-2-3”，变成-“1”-”2”-”3”-。将-‘q’-‘w’-‘e’-‘r’-变成-‘q-w-e-r’" class="headerlink" title="请将 “1,2,3”，变成 [“1”,”2”,”3”]。将[‘q’, ‘w’, ‘e’, ‘r’]变成 ‘q,w,e,r’"></a>请将 “1,2,3”，变成 [“1”,”2”,”3”]。将[‘q’, ‘w’, ‘e’, ‘r’]变成 ‘q,w,e,r’</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">"1,2,3"</span>.split(<span class="string">','</span>)</div><div class="line"><span class="string">','</span>.join([<span class="string">'q'</span>, <span class="string">'w'</span>, <span class="string">'e'</span>, <span class="string">'r'</span>])</div></pre></td></tr></table></figure>
+<h3 id="一行生成-9-9乘法表-列表生成式-python装B必备"><a href="#一行生成-9-9乘法表-列表生成式-python装B必备" class="headerlink" title="一行生成 9 * 9乘法表,列表生成式(python装B必备)"></a>一行生成 9 * 9乘法表,列表生成式(python装B必备)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print(<span class="string">'\n'</span>.join([ <span class="string">' '</span>.join( [ <span class="string">'&#123;&#125;*&#123;&#125; = &#123;&#125;'</span>.format(x,y,x*y) <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">1</span>,x+<span class="number">1</span>)] ) <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">10</span>)]))</div></pre></td></tr></table></figure>
+<h3 id="创建一个简单tcp服务器需要的流程？"><a href="#创建一个简单tcp服务器需要的流程？" class="headerlink" title="创建一个简单tcp服务器需要的流程？"></a>创建一个简单tcp服务器需要的流程？</h3><p>1.socket创建一个套接字<br>2.bind绑定ip和port<br>3.listen使套接字变为可以被动链接<br>4.accept等待客户端的链接<br>5.recv/send接收发送数据</p>
+<h3 id="谈谈对线程、进程、协程的理解"><a href="#谈谈对线程、进程、协程的理解" class="headerlink" title="谈谈对线程、进程、协程的理解"></a>谈谈对线程、进程、协程的理解</h3><p>进程是具有一定独立功能的程序关于某个数据集合上的一次运行活动,进程是系统进行资源分配<br>和调度的一个独立单位。每个进程都有自己的独立内存空间，不同进程通过进程间通信来通信。<br>由于进程比较重量，占据独立的内存，所以上下文进程间的切换开销（栈寄存器、虚拟内存、<br>文件句柄等）比较大，但相对比较稳定安全。</p>
+<p>线程是进程的一个实体,是CPU调度和分派的基本单位,它是比进程更小的能独立运行的基本单位.<br>线程自己基本上不拥有系统资源,只拥有一点在运行中必不可少的资源(如程序计数器,一组寄存器和<br>栈),但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源。线程间通信主要通过共享内<br>存，上下文切换很快，资源开销较少，但相比进程不够稳定容易丢失数据。<br>协程是一种用户态的轻量级线程，协程的调度完全由用户控制。协程拥有自己的寄存器上下文和<br>栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存<br>器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/10/Pythoon爬取糗事百科段子/" rel="next" title="Python爬取糗事百科段子">
+                <i class="fa fa-chevron-left"></i> Python爬取糗事百科段子
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMDk3OC83NTI3"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Eden" />
+          <p class="site-author-name" itemprop="name">Eden</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/govsb" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/T1ckster" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      weibo
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=483671599&auto=1&height=66"></iframe>
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string-reverse-‘abcdefg’-，返回’gfedcba’"><span class="nav-number">1.</span> <span class="nav-text">用Python语言写一个函数，输入一个字符串，返回倒序排列的结果：如：string_reverse(‘abcdefg’)，返回’gfedcba’</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python函数中经常有-args，-kwargs-这两个参数，它们是什么意思，为什么要使用它们？"><span class="nav-number">2.</span> <span class="nav-text">Python函数中经常有 args，*kwargs 这两个参数，它们是什么意思，为什么要使用它们？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python中的变量作用域（变量查找顺序）。"><span class="nav-number">3.</span> <span class="nav-text">Python中的变量作用域（变量查找顺序）。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#描述Python-GIL的概念，-以及它对python多线程的影响？"><span class="nav-number">4.</span> <span class="nav-text">描述Python GIL的概念， 以及它对python多线程的影响？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#is和-的区别是？"><span class="nav-number">5.</span> <span class="nav-text">is和==的区别是？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#能简单说一下你了解的socket吗？"><span class="nav-number">6.</span> <span class="nav-text">能简单说一下你了解的socket吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何用列表生成式生成-1-4-9-16-25-36-49-64-81-100-？"><span class="nav-number">7.</span> <span class="nav-text">如何用列表生成式生成[1,4,9,16,25,36,49,64,81,100]？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成器是什么？有什么作用？请写出一个生成器"><span class="nav-number">8.</span> <span class="nav-text">生成器是什么？有什么作用？请写出一个生成器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于-python-程序的运行性能方面，有什么手段能提升性能？"><span class="nav-number">9.</span> <span class="nav-text">关于 python 程序的运行性能方面，有什么手段能提升性能？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将字符串：”k-1-k1-2-k2-3-k3-4”，处理成-python-字典：-k-1-k1-2-…"><span class="nav-number">10.</span> <span class="nav-text">将字符串：”k:1|k1:2|k2:3|k3:4”，处理成 python 字典：{k:1, k1:2, … }</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-or-2-和-1-and-2-分别输出什么？"><span class="nav-number">11.</span> <span class="nav-text">1 or 2   和   1 and 2 分别输出什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#看代码"><span class="nav-number">12.</span> <span class="nav-text">看代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#看代码写结果"><span class="nav-number">13.</span> <span class="nav-text">看代码写结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出以下结果"><span class="nav-number">14.</span> <span class="nav-text">输出以下结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请将-“1-2-3”，变成-“1”-”2”-”3”-。将-‘q’-‘w’-‘e’-‘r’-变成-‘q-w-e-r’"><span class="nav-number">15.</span> <span class="nav-text">请将 “1,2,3”，变成 [“1”,”2”,”3”]。将[‘q’, ‘w’, ‘e’, ‘r’]变成 ‘q,w,e,r’</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一行生成-9-9乘法表-列表生成式-python装B必备"><span class="nav-number">16.</span> <span class="nav-text">一行生成 9 * 9乘法表,列表生成式(python装B必备)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个简单tcp服务器需要的流程？"><span class="nav-number">17.</span> <span class="nav-text">创建一个简单tcp服务器需要的流程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#谈谈对线程、进程、协程的理解"><span class="nav-number">18.</span> <span class="nav-text">谈谈对线程、进程、协程的理解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eden</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共10.2k字</span>
+</div>
+
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
